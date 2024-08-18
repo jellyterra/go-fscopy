@@ -16,6 +16,8 @@ func Copy(src, dest string) error {
 	switch {
 	case err == nil:
 		return nil
+	case errors.Is(err.(syscall.Errno), syscall.EOPNOTSUPP):
+		fallthrough
 	case errors.Is(err.(syscall.Errno), syscall.EXDEV):
 		return RawCopy(src, dest)
 	default:
